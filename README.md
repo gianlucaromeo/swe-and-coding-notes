@@ -5,6 +5,8 @@ Concise and comprehensive explanations of key topics in software engineering and
 ### How this repoistory is structured
 
 ```shell
-collection/        # Broad category (e.g., "javascript")
-└── topic.md/      # Explanation of the topic (e.g., "type-coercion")
+collection/       # Broad category (e.g., "javascript")
+└── todo/         # Explanation of the topic (e.g., "type-coercion")
+     └── topic.md # Work-in-progress explanation of the topic (e.g., "type-coercion")
+└── topic.md/     # Explanation of the topic (e.g., "type-coercion")
 ```
