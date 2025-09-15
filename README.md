@@ -1,6 +1,6 @@
 # Software Engineering and Programming Notes
 
-Concise and comprehensive explanations of key topics in software engineering and programming.
+Short but comprehensive explanations of key topics in software engineering and programming.
 
 ### How this repoistory is structured
 
