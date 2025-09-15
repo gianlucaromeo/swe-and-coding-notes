@@ -1,12 +1,5 @@
 # Software Engineering and Programming Notes
 
-Short but comprehensive explanations of key topics in software engineering and programming.
+> One of the best way to understand something, is to explain it.
 
-### How this repoistory is structured
-
-```shell
-<collection>/        # Broad category (e.g., "javascript")
-└── todo/            # Collection of work-in-progress topics
-     └── <topic>.md  # Work-in-progress explanation of the topic (e.g., "type-coercion")
-└── <topic>.md/      # Explanation of the topic (e.g., "type-coercion")
-```
+A collection of notes about software engineering, programming languages, and frameworks.
