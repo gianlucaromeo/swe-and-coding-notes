@@ -6,7 +6,7 @@ Coercion is the automatic or implicit conversion of values from one data type to
 
 ```javascript
 console.log("5" * 2) // 10
-console.log("5" + 2) // "7"
+console.log("5" + 2) // "52"
 ```
 
 ## Some rules 
