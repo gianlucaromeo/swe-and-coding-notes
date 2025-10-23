@@ -81,6 +81,39 @@ Another way to flatten this waterfall would be to prefetch the comments in the `
 If we have a Dependent Nested Component Waterfall, in which the second query (in the child component) is dependent on the parent, we can't just hoist the query to the parent or add prefetching. One option is to refactor our API to include the data in one single query. Another more advanced solution is to leverage Server Components to move the waterfall to the server where latency is lower - but this can be a big architectural change.
 
 Note that you can have good performance even with a few query waterfalls.
+
+### Prefetching & Router Integration
+
+You can use prefetch to populate the cache with data you know you might need ahead of time, leading to a faster experience.
+
+There are a few different prefetching patterns:
+1. In event handlers
+2. In components
+3. Via router integration
+4. During Server Rendering (another form of router integration)
+
+A few notes about the functions `prefetchQuery` and `prefetchInfiniteQuery` first:
+* They use the default `staleTime` to determine if cache is fresh
+    * You can specify a specific `staleTime` if needed, which will be used ONLY for the prefetch
+    * To ignore the `staleTime` you can use the `ensureQueryData` function
+    * If you are prefetching on the server, set a default `staleTime` higher than 0 for that `queryClient` to avoid having to pass a specific `staleTime` to every prefetch call
+* These functions always return `Promise<void>`, no data. And they never throw errors because they usualy try to fetch again in a `useQuery`. For data and/or error handling, you need to use `fetchQuery` or `fetchInfiniteQuery`
+
+#### Prefetch in event handlers
+
+Straightforward: Call it as a function on some event, such as onMouseEnter.
+
+#### Prefetch in components
+
+Technically, you can make a query and ignore the results, using for example `useQuery`. But this way won't work if you have to combine suspensful queries. In that case can use `usePrefetchQuery` or `usePrefetchInfiniteQuery`.
+
+If you need to, you can also prefetch inside a query function. For example, if you know that you need to fetch comments of an article everytime an article is fetched, it makes sense.
+
+You can also prefetch in an effect, but if you are using `useSuspenseQuery` in the same copmonent, this won't run until after the query finishes!
+
+#### Router intergration
+
+TODO
 ## 💙 TanStack Table
 
 
