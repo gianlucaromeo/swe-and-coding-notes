@@ -114,6 +114,39 @@ You can also prefetch in an effect, but if you are using `useSuspenseQuery` in t
 #### Router intergration
 
 TODO
+
+### Server Rendering & Hydration
+
+> Reminder: Server Rendering is the act of generating the initial html on the server, so that the user has some content to look at as soon as the page loads. This can happen on demand when a page is requested (SSR) or ahead of time either because a request was cached or at build time (SSG).
+
+With Server Rendering we can transform multiple waterfall requests into something like:
+
+```
+1. |-> Markup (with content AND initial data)
+2.   |-> JS
+```
+
+So that the user can already see the content and, when 2. finishes, the page is interactive and clickable. This skips a third step of code running on the client to fetch some data.
+
+From the server perspective, we need to:
+1. **prefetch** that data before we generate the markup
+2. **dehydrate** that data into a serializable format we can embed in the markup.
+
+On the client, we need to:
+1. **hydrate** that data into a React Query cache to avoid doing a new fetch.
+
+With a little setup, you can:
+- use `queryClient` to prefetch queries during a preload phase
+- pass a srialized version of that `queryClient` to the rendering part of the app and reuse it there
+
+After prefetching on the server, you can return a `dehydrate(queryClient)` and wrap your tree with `<HydrationBoundary state={dehydratedState}></HydrationBoundary>`
+
+Note that `dehydrate(...)` only includes succesful queries, not failed ones, and that `queryClient.prefetchQuery(...)` never throws error. If you want to handle errors, you have to use `queryClient.fetchQuery(...)`.
+
+If you want to include failed queries in the dehydrated state, you can use the option `shouldDehydrateQuery`.
+
+Note that if we "optimaze" a page, like `/feed`, but we navigate to it within a link from another page, in SPA's server rendering only works for the initial page load, not for any subsequent navigation.
+
 ## 💙 TanStack Table
 
 
