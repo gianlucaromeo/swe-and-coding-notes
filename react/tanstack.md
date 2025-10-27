@@ -9,6 +9,47 @@ The central manager in TanStack Query:
 * Provides API to fetch, refetch, remove queries.
 * Keeps configuration for retries, garbage collection, defaults.
 
+### Queries, Mutations
+
+A declarative dependency on an asynchronous source of data that is tied to a unique key.
+
+If your method modifies data on the server, it is recommended to use Mutations instead.
+
+You can use the hooks `useQuery` or `useMutation`. You have to provide a `queryKey` (used internally for refetching, caching, sharing queries through your app) and a `queryFn` that returns a Promise.
+
+Result of the useQuery:
+- `isPending` (query has no data yet)
+- `isError`
+- `isSuccess` (query succesful and data available)
+- `isFecthing` (`true` if the query is fetching at any time, including background refetching)
+- `error`
+- `data`
+- `status` (info about the `data`: Do we have it or not?)
+- `fetchStatus` (info about the `queryFn`: Is it running or not?)
+
+#### Query key
+
+An array of values, hashed deterministically (order of keys doesn't matter).
+
+If your queryFn depends on a variable, include it in your query key:
+
+```typescript
+function Todos({ todoId }) {
+  const result = useQuery({
+    queryKey: ['todos', todoId],
+    queryFn: () => fetchTodoById(todoId),
+  })
+}
+```
+
+#### Query function
+
+Any function that returns a Promise that either resolves or throws an error (or returns a rejected Promise).
+
+#### Query Options
+
+`queryOptions` is an helper to share `queryKey` and `queryFn` between multiple places, yet keeping them co-located to one another.
+
 ### Prefetch, hydration, and `HydrationBoundary`
 
 React Query hydration means synchronizing server-fetched data into client's cache.
