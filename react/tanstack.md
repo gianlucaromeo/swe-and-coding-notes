@@ -147,6 +147,31 @@ If you want to include failed queries in the dehydrated state, you can use the o
 
 Note that if we "optimaze" a page, like `/feed`, but we navigate to it within a link from another page, in SPA's server rendering only works for the initial page load, not for any subsequent navigation.
 
+### Advanced Server Rendering
+
+The first step of any React Query setup is always to create a `queryClient` and wrap your application in a `QueryClientProvider`.
+
+Using React Query with Server Components (SC) makes most sense if:
+* You already use React Query and want to migrate to SC without rewriting all the data fetching
+* You want a familiar programming paradigm but with the benefits of SC
+* Your framework of choice doesn't cover some use case that React Query does
+
+> **Tips**: If you're just starting out with a new SC app, avoid bringing React Query until you actually need it. If you do use it, avoid using `queryClient.fetchQuery` unless you need to catch errors. If you don't use it, don't render its result on the server or pass the result to another component, even a Client Component. From the React Query perspective, treat SC as a place to prefetch data, nothing more.
+
+#### Streaming with SC
+
+Next.js app router automatically streams any part of the application that is ready to be displayed to the browser as soon as possible, so finished content can be displayed immediately without waiting for still pending content, and it does it along with `<Suspense>` boundary lines.
+
+> Note that, if you create a `loading.tsx` file, this automatically creates a `<Suspense>`
+ boundary behind the scenes.
+
+React Query can also serialize ("dehydrate") queries that are still loading (`pending`) and send them to the client as part of the streamed response. So:
+* You can start data fetching early on the server and send partial HTML immediately
+* The browser shows the HTML while the remaining queries continue loading
+* When those queries finish, the results stream in and React hydrates them without reloading the page
+
+To make this work, we have to instruct the `queryClient`to also `dehydrate`pending queries (either globally or directly with an option), and we will want to use the `getQueryClient()` function in our server component and our client provider. (This works in Next.js and SC because React can serialize Promises over the wire when you pass them down to Client Components.)
+
 ## 💙 TanStack Table
 
 
