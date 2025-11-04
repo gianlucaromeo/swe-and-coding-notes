@@ -43,3 +43,13 @@ npm install @trpc/server @trpc/client
 ## Note
 
 * tRPC is only a **typesafe API layer**, not an ORM. It defines procedures and transports inputs/output between cliend and server with full TypeScript inference.
+
+## Context
+
+Context holds data that all of your tRPC procedures will have access to (like database connections or authentication information).
+
+## Server Side Calls
+
+If you need to call your procedures directly from the same server they're hosted in, you can use `createCallerFactory`, a function that lets you create server-side caller of any router.
+
+This is useful for server-side calls and for integration testing of your tRPC procedures.
